@@ -126,7 +126,17 @@ export const ShopContextProvider = ({ children }) => {
   const API_URL = '/api';
 
   // State Declarations
-  const [products, setProducts] = useState(localMockProducts);
+  const [products, setProducts] = useState(() => {
+    const saved = localStorage.getItem('localProducts');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return localMockProducts;
+      }
+    }
+    return localMockProducts;
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [backendStatus, setBackendStatus] = useState({ online: false, type: 'Local Simulation' });
@@ -197,11 +207,21 @@ export const ShopContextProvider = ({ children }) => {
       if (!response.ok) throw new Error('API request failed');
       const data = await response.json();
       setProducts(data);
+      localStorage.setItem('localProducts', JSON.stringify(data));
       setBackendStatus({ online: true, type: 'Full Database' });
       setError(null);
     } catch (err) {
       console.log('Backend offline or unreachable. Using offline simulated mode.', err.message);
-      // Fallback is already loaded via default state
+      const saved = localStorage.getItem('localProducts');
+      if (saved) {
+        try {
+          setProducts(JSON.parse(saved));
+        } catch (e) {
+          setProducts(localMockProducts);
+        }
+      } else {
+        setProducts(localMockProducts);
+      }
       setBackendStatus({ online: false, type: 'Local Simulation (Offline)' });
     } finally {
       setLoading(false);
@@ -424,7 +444,11 @@ export const ShopContextProvider = ({ children }) => {
         reviews: [],
         createdAt: new Date().toISOString()
       };
-      setProducts(prev => [newLocalProduct, ...prev]);
+      setProducts(prev => {
+        const updated = [newLocalProduct, ...prev];
+        localStorage.setItem('localProducts', JSON.stringify(updated));
+        return updated;
+      });
       return newLocalProduct;
     }
   };
@@ -448,17 +472,22 @@ export const ShopContextProvider = ({ children }) => {
       return data;
     } catch (err) {
       console.warn('Could not edit product on database, editing in local memory.', err.message);
-      setProducts(prev => prev.map(p => {
-        if (p._id === id) {
-          return {
-            ...p,
-            ...productData,
-            price: Number(productData.price),
-            stock: Number(productData.stock)
-          };
-        }
-        return p;
-      }));
+      let updated;
+      setProducts(prev => {
+        updated = prev.map(p => {
+          if (p._id === id) {
+            return {
+              ...p,
+              ...productData,
+              price: Number(productData.price),
+              stock: Number(productData.stock)
+            };
+          }
+          return p;
+        });
+        localStorage.setItem('localProducts', JSON.stringify(updated));
+        return updated;
+      });
       return { _id: id, ...productData };
     }
   };
@@ -479,7 +508,11 @@ export const ShopContextProvider = ({ children }) => {
       return true;
     } catch (err) {
       console.warn('Could not delete product from database, deleting from local memory.', err.message);
-      setProducts(prev => prev.filter(p => p._id !== id));
+      setProducts(prev => {
+        const updated = prev.filter(p => p._id !== id);
+        localStorage.setItem('localProducts', JSON.stringify(updated));
+        return updated;
+      });
       return true;
     }
   };
