@@ -15,10 +15,8 @@ const protect = async (req, res, next) => {
       if (token.startsWith('mock-jwt-')) {
         const mockData = require('../data/mockData');
         let user;
-        if (token.includes('owner')) {
+        if (token.includes('owner') || token.includes('admin')) {
           user = mockData.findUserByEmail('sethswayam21@gmail.com');
-        } else if (token.includes('admin')) {
-          user = mockData.findUserByEmail('admin@monikascreation.com');
         } else {
           user = mockData.findUserByEmail('customer@gmail.com') || mockData.mockUsers[1];
         }

@@ -16,14 +16,6 @@ const mockUsers = [
     createdAt: new Date()
   },
   {
-    _id: 'user_admin_id_001',
-    name: "Monika's Admin",
-    email: 'admin@monikascreation.com',
-    password: hashedAdminPassword,
-    isAdmin: true,
-    createdAt: new Date()
-  },
-  {
     _id: 'user_customer_id_002',
     name: 'Rahul Sharma',
     email: 'customer@gmail.com',

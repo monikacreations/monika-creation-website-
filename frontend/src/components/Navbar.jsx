@@ -4,7 +4,7 @@ import { ShopContext } from '../context/ShopContext';
 import { ShoppingBag, Search, User, Sun, Moon, Menu, X, LogOut, Settings, Bell, Info, AlertTriangle, Tag } from 'lucide-react';
 
 export default function Navbar() {
-  const { getCartCount, userInfo, logoutUser, theme, toggleTheme, backendStatus } = useContext(ShopContext);
+  const { getCartCount, userInfo, logoutUser, theme, toggleTheme } = useContext(ShopContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -135,9 +135,6 @@ export default function Navbar() {
       {/* Top Notification Bar */}
       <div className="top-banner">
         <p>✨ Elegant Banarasi & Amritsari Fabric Works • Free Shipping on orders above ₹2000! ✨</p>
-        <span className="backend-badge" title={`Database State: ${backendStatus.type}`}>
-          {backendStatus.online ? '● Connected' : '○ Offline Mode'}
-        </span>
       </div>
 
       <nav className="main-nav container">

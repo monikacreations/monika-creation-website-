@@ -456,9 +456,6 @@ export default function Admin() {
           <span className="section-tag">Namaste, Owner</span>
           <h1 className="admin-dashboard-title" style={{ margin: '6px 0 0' }}>Boutique Management</h1>
         </div>
-        <div className="backend-badge" style={{ background: 'var(--primary)', border: '1px solid var(--accent)', padding: '6px 16px', fontSize: '0.85rem' }}>
-          Database Mode: {backendStatus.type}
-        </div>
       </div>
 
       {/* Metrics Row */}

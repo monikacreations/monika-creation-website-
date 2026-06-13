@@ -53,6 +53,10 @@ mongoose.connect(mongoUri, {
     const User = require('./models/User');
     const bcrypt = require('bcryptjs');
     const ownerEmail = 'sethswayam21@gmail.com';
+    
+    // Purge unwanted default test admin account if present in MongoDB
+    await User.deleteMany({ email: 'admin@monikascreation.com' });
+    
     const ownerExists = await User.findOne({ email: ownerEmail });
     if (!ownerExists) {
       console.log('Owner account not found. Seeding owner account...');

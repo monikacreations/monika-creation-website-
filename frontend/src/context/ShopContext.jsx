@@ -255,18 +255,7 @@ export const ShopContextProvider = ({ children }) => {
       const normalizedEmail = email.trim().toLowerCase();
       
       // Local Auth simulation (matching backend seed data)
-      if (normalizedEmail === 'admin@monikascreation.com' && password === 'admin123') {
-        const mockAdmin = {
-          _id: 'user_admin_id_001',
-          name: "Monika's Admin",
-          email: 'admin@monikascreation.com',
-          isAdmin: true,
-          token: 'mock-jwt-admin-token'
-        };
-        setUserInfo(mockAdmin);
-        localStorage.setItem('userInfo', JSON.stringify(mockAdmin));
-        return { success: true, user: mockAdmin };
-      } else if (normalizedEmail === 'sethswayam21@gmail.com' && password === 'Monik@6306') {
+      if (normalizedEmail === 'sethswayam21@gmail.com' && password === 'Monik@6306') {
         const mockAdmin = {
           _id: 'user_owner_id_003',
           name: "Monika's Creation Owner",
@@ -674,7 +663,6 @@ export const ShopContextProvider = ({ children }) => {
       const localUsers = localStorage.getItem('localUsers') ? JSON.parse(localStorage.getItem('localUsers')) : [];
       const defaultUsers = [
         { _id: 'user_owner_id_003', name: "Monika's Creation Owner", email: 'sethswayam21@gmail.com', phone: '0000000000', isAdmin: true, createdAt: new Date().toISOString() },
-        { _id: 'user_admin_id_001', name: "Monika's Admin", email: 'admin@monikascreation.com', phone: '0000000000', isAdmin: true, createdAt: new Date().toISOString() },
         { _id: 'user_customer_id_002', name: 'Rahul Sharma', email: 'customer@gmail.com', phone: '9876543210', isAdmin: false, createdAt: new Date().toISOString() }
       ];
       const allUsers = [...defaultUsers];
