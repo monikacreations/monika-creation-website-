@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = '/api';
 
 export default function Login() {
   const { loginUser, registerUser, logoutUser, userInfo } = useContext(ShopContext);

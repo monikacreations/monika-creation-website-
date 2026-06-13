@@ -1,0 +1,9 @@
+[build]
+publish = "dist" # make sure this point to your build folder
+command = "npm run build" #Adjust this if your nuild command is different 
+
+[[redirects]]
+from = "/"
+to = "index.html"
+
+status = 200

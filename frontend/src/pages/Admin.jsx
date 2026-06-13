@@ -8,7 +8,7 @@ import {
 
 export default function Admin() {
   const { 
-    products, userInfo, backendStatus, addProduct, editProduct, deleteProduct, getAllOrders, deliverOrder,
+    products, userInfo, backendStatus, addProduct, editProduct, deleteProduct, getAllOrders, deliverOrder, payOrder,
     getCoupons, createCoupon, toggleCoupon, deleteCoupon,
     upiId, qrCode, updateUpiSettings
   } = useContext(ShopContext);

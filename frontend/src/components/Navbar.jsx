@@ -28,7 +28,7 @@ export default function Navbar() {
         if (userInfo.isAdmin) {
           // Admin notifications
           // 1. Fetch products
-          const prodRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/products`);
+          const prodRes = await fetch(`/api/products`);
           if (prodRes.ok) {
             const prods = await prodRes.json();
             prods.forEach(p => {
@@ -45,7 +45,7 @@ export default function Navbar() {
           }
           
           // 2. Fetch orders
-          const ordRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/orders`, {
+          const ordRes = await fetch(`/api/orders`, {
             headers: { 'Authorization': `Bearer ${userInfo.token}` }
           });
           if (ordRes.ok) {
@@ -64,7 +64,7 @@ export default function Navbar() {
         } else {
           // Customer notifications
           // 1. Fetch my orders
-          const ordRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/orders/myorders`, {
+          const ordRes = await fetch(`/api/orders/myorders`, {
             headers: { 'Authorization': `Bearer ${userInfo.token}` }
           });
           if (ordRes.ok) {
@@ -80,21 +80,18 @@ export default function Navbar() {
             });
           }
           
-          // 2. Fetch active coupons
-          const coupRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/coupons`);
-          if (coupRes.ok) {
-            const coups = await coupRes.json();
-            const activeCoups = coups.filter(c => c.isActive);
-            activeCoups.forEach(c => {
-              list.push({
-                id: `coupon-${c._id}`,
-                type: 'promo',
-                title: '🎁 Special Offer Active',
-                message: `Use code "${c.code}" to get ₹${c.discountAmount} off on orders above ₹${c.minOrderValue}!`,
-                time: 'Promo'
-              });
+          // 2. Show active coupons from local cache
+          const savedCoupons = JSON.parse(localStorage.getItem('localCoupons') || '[]');
+          const activeCoupons = savedCoupons.filter(c => c.isActive);
+          activeCoupons.forEach(c => {
+            list.push({
+              id: `coupon-${c._id}`,
+              type: 'promo',
+              title: '🎁 Special Offer Active',
+              message: `Use code "${c.code}" for ${c.discountType === 'percentage' ? c.discountValue + '%' : '₹' + c.discountValue} off on orders above ₹${c.minPurchase}!`,
+              time: 'Promo'
             });
-          }
+          });
         }
 
         setNotifications(list);

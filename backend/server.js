@@ -11,8 +11,26 @@ const seedData = require('./data/seed');
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+// CORS: allow Vite dev (port 3000/3001/5173) and production origin
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:5173',
+  process.env.FRONTEND_URL || ''
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like curl/Postman) or from allowed origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+app.use(express.json({ limit: '10mb' })); // Increased limit for base64 image uploads
 
 // State flag for mock database fallback
 global.useMockDb = false;
@@ -44,6 +62,7 @@ mongoose.connect(mongoUri, {
         name: "Monika's Creation Owner",
         email: ownerEmail,
         password: hashedPassword,
+        phone: '0000000000',
         isAdmin: true
       });
       console.log('Owner account seeded successfully.');
@@ -95,6 +114,33 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} in ${global.useMockDb ? 'MOCK' : 'MONGO'} database mode.`);
 });
+
+// Handle server errors (e.g. EADDRINUSE when port is already occupied)
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`\n❌ Port ${PORT} is already in use.`);
+    console.error(`   Stop the existing process and restart: kill the process using port ${PORT}\n`);
+  } else {
+    console.error('Server error:', err.message);
+  }
+  process.exit(1);
+});
+
+// Graceful shutdown on SIGTERM/SIGINT (used by nodemon on restart)
+const shutdown = () => {
+  console.log('\nShutting down server gracefully...');
+  server.close(() => {
+    mongoose.connection.close(false, () => {
+      console.log('MongoDB connection closed.');
+      process.exit(0);
+    });
+  });
+  // Force exit after 5 seconds if still hanging
+  setTimeout(() => process.exit(0), 5000);
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);

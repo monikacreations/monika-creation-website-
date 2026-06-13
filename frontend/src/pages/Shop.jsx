@@ -83,8 +83,8 @@ export default function Shop() {
       if (sortBy === 'rating') {
         return b.rating - a.rating;
       }
-      // default: newest/id
-      return b.createdAt.localeCompare(a.createdAt);
+      // default: newest/id (handle both Date objects and ISO strings)
+      return new Date(b.createdAt) - new Date(a.createdAt);
     });
 
   const categoriesList = ['Banarasi Fabric Works', 'Amritsari Fabric Works', 'Ladies Purses'];

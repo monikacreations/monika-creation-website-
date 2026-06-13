@@ -302,27 +302,6 @@ const deliverOrder = (id) => {
   return null;
 };
 
-module.exports = {
-  mockProducts,
-  mockUsers,
-  mockOrders,
-  getProducts,
-  getProductById,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-  addReview,
-  findUserByEmail,
-  findUserById,
-  createUser,
-  getOrders,
-  getMyOrders,
-  getOrderById,
-  createOrder,
-  payOrder,
-  deliverOrder
-};
-
 const mockCoupons = [
   {
     _id: 'coupon_mock_1',
