@@ -239,6 +239,21 @@ export const ShopContextProvider = ({ children }) => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // Auto-remove deleted products from the shopping cart
+  useEffect(() => {
+    if (!loading && products.length > 0) {
+      setCartItems(prev => {
+        const filtered = prev.filter(item => 
+          products.some(p => p._id === item.product) && !deletedProductIds.includes(item.product)
+        );
+        if (filtered.length !== prev.length) {
+          return filtered;
+        }
+        return prev;
+      });
+    }
+  }, [products, loading, deletedProductIds]);
+
   // Sync Local Orders to LocalStorage
   useEffect(() => {
     localStorage.setItem('localOrders', JSON.stringify(localOrders));
@@ -248,7 +263,7 @@ export const ShopContextProvider = ({ children }) => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_URL}/products`);
+      const response = await fetch(`${API_URL}/products?_t=${Date.now()}`);
       const contentType = response.headers.get('content-type');
       if (!response.ok || !contentType || !contentType.includes('application/json')) {
         throw new Error('API server unreachable');
@@ -999,6 +1014,7 @@ export const ShopContextProvider = ({ children }) => {
         loading,
         error,
         backendStatus,
+        fetchProducts,
         theme,
         toggleTheme,
         userInfo,

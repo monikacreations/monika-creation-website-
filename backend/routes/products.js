@@ -7,6 +7,7 @@ const { protect, admin } = require('../middleware/authMiddleware');
 // @route   GET /api/products
 // @access  Public
 router.get('/', async (req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   try {
     const category = req.query.category;
     let products = await dbAdapter.getAllProducts();
@@ -23,6 +24,7 @@ router.get('/', async (req, res) => {
 // @route   GET /api/products/:id
 // @access  Public
 router.get('/:id', async (req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   try {
     const product = await dbAdapter.findProductById(req.params.id);
     if (product) {

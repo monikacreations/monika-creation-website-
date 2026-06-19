@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 import { ArrowRight, Sparkles, MapPin, ShieldCheck, HeartHandshake } from 'lucide-react';
 
 export default function Home() {
-  const { products, addToCart } = useContext(ShopContext);
+  const { products, addToCart, fetchProducts } = useContext(ShopContext);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   // Take first 4 items as featured products
   const featuredProducts = products.slice(0, 4);

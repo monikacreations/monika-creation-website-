@@ -4,7 +4,8 @@ dns.setDefaultResultOrder('ipv4first');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
@@ -50,6 +51,7 @@ const initializeDatabase = async () => {
   try {
     await mongoose.connect(mongoUri, {
       serverSelectionTimeoutMS: 3000, // Timeout after 3 seconds
+      family: 4 // Force IPv4 to resolve Atlas DNS issues
     });
     console.log('Successfully connected to MongoDB!');
     global.useMockDb = false;
@@ -126,34 +128,49 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} in ${global.useMockDb ? 'MOCK' : 'MONGO'} database mode.`);
-});
+let server = null;
 
-// Handle server errors (e.g. EADDRINUSE when port is already occupied)
-server.on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    console.error(`\n❌ Port ${PORT} is already in use.`);
-    console.error(`   Stop the existing process and restart: kill the process using port ${PORT}\n`);
-  } else {
-    console.error('Server error:', err.message);
-  }
-  process.exit(1);
-});
+const startServer = (retries = 5) => {
+  server = app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT} in ${global.useMockDb ? 'MOCK' : 'MONGO'} database mode.`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      if (retries > 0) {
+        console.log(`Port ${PORT} is busy, retrying in 1 second... (${retries} retries left)`);
+        setTimeout(() => {
+          startServer(retries - 1);
+        }, 1000);
+      } else {
+        console.error(`\n❌ Port ${PORT} is already in use.`);
+        console.error(`   Stop the existing process and restart: kill the process using port ${PORT}\n`);
+        process.exit(1);
+      }
+    } else {
+      console.error('Server error:', err.message);
+      process.exit(1);
+    }
+  });
+};
+
+startServer();
 
 // Graceful shutdown on SIGTERM/SIGINT (used by nodemon on restart)
 const shutdown = () => {
   console.log('\nShutting down server gracefully...');
-  server.close(() => {
-    if (mongoose.connection.readyState !== 0) {
-      mongoose.connection.close(false, () => {
-        console.log('MongoDB connection closed.');
+  if (server) {
+    server.close(() => {
+      if (mongoose.connection.readyState !== 0) {
+        mongoose.connection.close(false, () => {
+          console.log('MongoDB connection closed.');
+          process.exit(0);
+        });
+      } else {
         process.exit(0);
-      });
-    } else {
-      process.exit(0);
-    }
-  });
+      }
+    });
+  }
   // Force exit after 5 seconds if still hanging
   setTimeout(() => process.exit(0), 5000);
 };

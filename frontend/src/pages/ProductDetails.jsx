@@ -5,7 +5,7 @@ import { ArrowLeft, ShoppingCart, Info, Star } from 'lucide-react';
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const { products, addToCart, userInfo, addProductReview } = useContext(ShopContext);
+  const { products, loading, addToCart, userInfo, addProductReview } = useContext(ShopContext);
   const [product, setProduct] = useState(null);
   const [activeImage, setActiveImage] = useState('');
   const [qty, setQty] = useState(1);
@@ -23,11 +23,20 @@ export default function ProductDetails() {
     }
   }, [id, products]);
 
-  if (!product) {
+  if (loading && !product) {
     return (
       <div className="container" style={{ padding: '80px 24px', textAlign: 'center' }}>
         <h2 style={{ fontFamily: 'var(--font-serif)', marginBottom: '20px' }}>Loading Product Details...</h2>
-        <Link to="/shop" className="btn btn-primary">Back to Shop</Link>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="container" style={{ padding: '80px 24px', textAlign: 'center' }}>
+        <h2 style={{ fontFamily: 'var(--font-serif)', marginBottom: '20px', color: 'var(--error)' }}>Product Not Found</h2>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>This product is no longer available in our catalog or has been removed by the administrator.</p>
+        <Link to="/shop" className="btn btn-primary">Back to Shop Catalog</Link>
       </div>
     );
   }

@@ -4,7 +4,7 @@ import { ShopContext } from '../context/ShopContext';
 import { Search, SlidersHorizontal } from 'lucide-react';
 
 export default function Shop() {
-  const { products, addToCart } = useContext(ShopContext);
+  const { products, addToCart, fetchProducts } = useContext(ShopContext);
   const location = useLocation();
 
   // Filter and Search States
@@ -16,6 +16,7 @@ export default function Shop() {
 
   // Load URL queries on mount/location change
   useEffect(() => {
+    fetchProducts();
     const params = new URLSearchParams(location.search);
     const categoryParam = params.get('category');
     const searchParam = params.get('search');
