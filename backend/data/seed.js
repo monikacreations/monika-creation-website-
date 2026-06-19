@@ -2,14 +2,15 @@ const Product = require('../models/Product');
 const User = require('../models/User');
 const Coupon = require('../models/Coupon');
 const mockData = require('./mockData');
+const dbAdapter = require('./dbAdapter');
 
 const seedData = async () => {
   try {
-    // Check if products already exist
+
+    // Check if products already exist in MongoDB
     const count = await Product.countDocuments();
     if (count > 0) {
       console.log('Database already has product data. Skipping product/user seed.');
-      // Still ensure default coupons exist
       await seedCoupons();
       return;
     }
@@ -79,9 +80,9 @@ const seedCoupons = async () => {
     ];
 
     for (const c of defaultCoupons) {
-      const exists = await Coupon.findOne({ code: c.code });
+      const exists = await dbAdapter.findCouponByCode(c.code);
       if (!exists) {
-        await Coupon.create(c);
+        await dbAdapter.createCoupon(c);
         console.log(`Seeded coupon: ${c.code}`);
       }
     }

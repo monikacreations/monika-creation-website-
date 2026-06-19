@@ -24,6 +24,9 @@ export default function Admin() {
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('');
+  const [additionalImages, setAdditionalImages] = useState([]);
+  const [galleryInputType, setGalleryInputType] = useState('file'); // 'file' or 'url'
+  const [galleryUrl, setGalleryUrl] = useState('');
   const [category, setCategory] = useState('Banarasi Fabric Works');
   const [fabric, setFabric] = useState('Cotton');
   const [stock, setStock] = useState('10');
@@ -155,7 +158,7 @@ export default function Admin() {
     return (
       <div className="container" style={{ padding: '80px 24px', textAlign: 'center' }}>
         <h2 style={{ color: 'var(--error)', marginBottom: '20px' }}>Access Denied</h2>
-        <p>You do not have administrative clearance to access this dashboard.</p>
+        <p>this is for admin only</p>
       </div>
     );
   }
@@ -163,8 +166,8 @@ export default function Admin() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        alert('Image size exceeds 2MB limit. Please choose a smaller image.');
+      if (file.size > 50 * 1024 * 1024) {
+        alert('Image size exceeds 50MB limit. Please choose a smaller image.');
         return;
       }
       const reader = new FileReader();
@@ -187,11 +190,15 @@ export default function Admin() {
       return;
     }
 
+    // Prepare full image list including the main image and any additional gallery images
+    const allImages = [image, ...additionalImages].filter(Boolean);
+
     const productPayload = {
       name,
       price: Number(price),
       description,
       image,
+      images: allImages,
       category,
       fabric,
       stock: Number(stock)
@@ -218,6 +225,10 @@ export default function Admin() {
     setPrice(p.price);
     setDescription(p.description);
     setImage(p.image);
+    // Find all images except the main one for the additional images gallery
+    const mainImg = p.image;
+    const extraImgs = p.images ? p.images.filter(img => img !== mainImg) : [];
+    setAdditionalImages(extraImgs);
     setCategory(p.category);
     setFabric(p.fabric);
     setStock(p.stock);
@@ -247,6 +258,8 @@ export default function Admin() {
     setPrice('');
     setDescription('');
     setImage('');
+    setAdditionalImages([]);
+    setGalleryUrl('');
     setCategory('Banarasi Fabric Works');
     setFabric('Cotton');
     setStock('10');
@@ -274,7 +287,7 @@ export default function Admin() {
   };
 
   // Metrics Calculations
-  const totalSales = orders.reduce((sum, o) => sum + (o.isPaid || o.paymentMethod === 'Cash on Delivery' || o.paymentMethod?.startsWith('UPI & QR Code') ? o.totalPrice : 0), 0);
+  const totalSales = orders.reduce((sum, o) => sum + (o.isPaid || o.paymentMethod === 'UPI & QR Code' || o.paymentMethod?.startsWith('UPI & QR Code') ? o.totalPrice : 0), 0);
   const totalProducts = products.length;
   const totalOrders = orders.length;
   const avgOrderValue = totalOrders > 0 ? Math.round(totalSales / totalOrders) : 0;
@@ -285,7 +298,7 @@ export default function Admin() {
     const currentMonth = now.getMonth();
     return orders.reduce((sum, o) => {
       const orderDate = new Date(o.createdAt);
-      const isPaidOrCOD = o.isPaid || o.paymentMethod === 'Cash on Delivery' || o.paymentMethod?.startsWith('UPI & QR Code');
+      const isPaidOrCOD = o.isPaid || o.paymentMethod === 'UPI & QR Code' || o.paymentMethod?.startsWith('UPI & QR Code');
       const isCurrentMonth = orderDate.getFullYear() === currentYear && orderDate.getMonth() === currentMonth;
       return sum + (isPaidOrCOD && isCurrentMonth ? o.totalPrice : 0);
     }, 0);
@@ -296,7 +309,8 @@ export default function Admin() {
     const breakdown = {
       'Banarasi Fabric Works': 0,
       'Amritsari Fabric Works': 0,
-      'Ladies Purses': 0
+      'Ladies Purses': 0,
+      'other items': 0
     };
     orders.forEach(o => {
       o.orderItems.forEach(item => {
@@ -305,7 +319,7 @@ export default function Admin() {
         if (breakdown[category] !== undefined) {
           breakdown[category] += item.price * item.qty;
         } else {
-          breakdown['Banarasi Fabric Works'] += item.price * item.qty;
+          breakdown['other items'] += item.price * item.qty;
         }
       });
     });
@@ -731,7 +745,7 @@ export default function Admin() {
                         <p style={{ fontSize: '0.85rem', color: 'var(--text-color)', marginBottom: '4px', fontWeight: '600' }}>
                           Drag & drop or click to choose an image file
                         </p>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Supports JPG, PNG, WEBP (Max 2MB)</span>
+                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Supports JPG, PNG, WEBP (Max 50MB)</span>
                       </div>
                     )}
                   </div>
@@ -750,6 +764,138 @@ export default function Admin() {
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Image URL Preview</span>
                       </div>
                     )}
+                  </div>
+                )}
+              </div>
+
+              {/* Product Gallery Images Field */}
+              <div className="admin-form-group" style={{ marginTop: '20px', borderTop: '1px solid var(--border-color)', paddingTop: '20px' }}>
+                <label className="auth-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  ✨ Product Gallery Images (Optional)
+                </label>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: '10px' }}>
+                  Add multiple pictures to show different angles or details of the product.
+                </span>
+
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setGalleryInputType('file')}
+                    className={`btn btn-sm ${galleryInputType === 'file' ? 'btn-primary' : 'btn-outline'}`}
+                    style={{ flex: 1, textTransform: 'none', fontSize: '0.75rem', padding: '6px 12px', height: 'auto', fontWeight: '600' }}
+                  >
+                    📁 Upload Gallery File
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGalleryInputType('url')}
+                    className={`btn btn-sm ${galleryInputType === 'url' ? 'btn-primary' : 'btn-outline'}`}
+                    style={{ flex: 1, textTransform: 'none', fontSize: '0.75rem', padding: '6px 12px', height: 'auto', fontWeight: '600' }}
+                  >
+                    🔗 Paste Gallery URL
+                  </button>
+                </div>
+
+                {galleryInputType === 'file' ? (
+                  <div className="file-upload-zone" style={{
+                    border: '2px dashed var(--border-color)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '16px',
+                    textAlign: 'center',
+                    background: 'rgba(74, 14, 78, 0.01)',
+                    cursor: 'pointer',
+                    position: 'relative'
+                  }}>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={(e) => {
+                        const files = Array.from(e.target.files);
+                        files.forEach(file => {
+                          if (file.size > 50 * 1024 * 1024) {
+                            alert(`File "${file.name}" exceeds 50MB limit.`);
+                            return;
+                          }
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            setAdditionalImages(prev => [...prev, reader.result]);
+                          };
+                          reader.readAsDataURL(file);
+                        });
+                      }}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        opacity: 0,
+                        cursor: 'pointer'
+                      }}
+                    />
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-color)', margin: 0, fontWeight: '600' }}>
+                      Drag & drop or click to upload multiple images
+                    </p>
+                    <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>Supports JPG, PNG, WEBP (Max 50MB per file)</span>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input
+                      type="text"
+                      placeholder="Paste direct image URL..."
+                      value={galleryUrl}
+                      onChange={(e) => setGalleryUrl(e.target.value)}
+                      className="form-input"
+                      style={{ flex: 1, fontSize: '0.85rem' }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (galleryUrl.trim()) {
+                          setAdditionalImages(prev => [...prev, galleryUrl.trim()]);
+                          setGalleryUrl('');
+                        }
+                      }}
+                      className="btn btn-primary btn-sm"
+                      style={{ textTransform: 'none', height: 'auto', fontWeight: '700' }}
+                    >
+                      Add URL
+                    </button>
+                  </div>
+                )}
+
+                {additionalImages.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '14px', background: 'rgba(0,0,0,0.02)', padding: '10px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+                    {additionalImages.map((imgUrl, idx) => (
+                      <div key={idx} style={{ position: 'relative', width: '60px', height: '60px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
+                        <img src={imgUrl} alt={`Gallery ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <button
+                          type="button"
+                          onClick={() => setAdditionalImages(prev => prev.filter((_, i) => i !== idx))}
+                          style={{
+                            position: 'absolute',
+                            top: '2px',
+                            right: '2px',
+                            background: 'rgba(239, 83, 80, 0.9)',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: '16px',
+                            height: '16px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '10px',
+                            cursor: 'pointer',
+                            fontWeight: 'bold'
+                          }}
+                          title="Remove image"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
@@ -972,8 +1118,8 @@ export default function Admin() {
         <div className="admin-panel-card">
           <h3 className="admin-panel-title" style={{ marginBottom: '20px' }}>👥 Boutique Customer Database</h3>
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>
-            <div className="customer-search-bar" style={{ margin: '0', flex: '1', maxWidth: '360px' }}>
+          <div className="admin-actions-bar">
+            <div className="customer-search-bar search-bar-wrapper">
               <input 
                 type="text"
                 placeholder="Search by Name or Email..."
@@ -986,17 +1132,7 @@ export default function Admin() {
             
             <button 
               onClick={exportSalesToExcel} 
-              className="btn btn-primary"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 18px',
-                fontSize: '0.88rem',
-                background: 'linear-gradient(135deg, #1D7842, #107C41)',
-                borderColor: '#107C41',
-                boxShadow: '0 4px 12px rgba(16, 124, 65, 0.2)'
-              }}
+              className="btn btn-primary export-btn-excel"
             >
               <FileSpreadsheet size={16} /> Export Sales to Excel
             </button>

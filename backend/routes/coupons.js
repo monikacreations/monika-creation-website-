@@ -1,19 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const Coupon = require('../models/Coupon');
+const dbAdapter = require('../data/dbAdapter');
 const { protect, admin } = require('../middleware/authMiddleware');
-const mockData = require('../data/mockData');
 
 // @desc    Get all coupons (Admin only)
 // @route   GET /api/coupons
 // @access  Private/Admin
 router.get('/', protect, admin, async (req, res) => {
   try {
-    if (global.useMockDb) {
-      return res.json(mockData.getCoupons());
-    }
-    const coupons = await Coupon.find({}).sort({ createdAt: -1 });
-    res.json(coupons);
+    const coupons = await dbAdapter.getAllCoupons();
+    // Sort descending by createdAt
+    const sorted = coupons.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.json(sorted);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -32,34 +30,17 @@ router.post('/', protect, admin, async (req, res) => {
 
     const uppercaseCode = code.trim().toUpperCase();
 
-    if (global.useMockDb) {
-      const exists = mockData.getCoupons().find(c => c.code === uppercaseCode);
-      if (exists) {
-        return res.status(400).json({ message: 'Coupon code already exists' });
-      }
-      const newCoupon = mockData.createCoupon({
-        code: uppercaseCode,
-        discountType,
-        discountValue: Number(discountValue),
-        minPurchase: Number(minPurchase || 0)
-      });
-      return res.status(201).json(newCoupon);
-    }
-
-    const couponExists = await Coupon.findOne({ code: uppercaseCode });
+    const couponExists = await dbAdapter.findCouponByCode(uppercaseCode);
     if (couponExists) {
       return res.status(400).json({ message: 'Coupon code already exists' });
     }
 
-    const coupon = new Coupon({
+    const createdCoupon = await dbAdapter.createCoupon({
       code: uppercaseCode,
       discountType,
       discountValue: Number(discountValue),
-      minPurchase: Number(minPurchase || 0),
-      isActive: true
+      minPurchase: Number(minPurchase || 0)
     });
-
-    const createdCoupon = await coupon.save();
     res.status(201).json(createdCoupon);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -71,19 +52,11 @@ router.post('/', protect, admin, async (req, res) => {
 // @access  Private/Admin
 router.put('/:id', protect, admin, async (req, res) => {
   try {
-    if (global.useMockDb) {
-      const updatedCoupon = mockData.toggleCoupon(req.params.id);
-      if (updatedCoupon) {
-        return res.json(updatedCoupon);
-      } else {
-        return res.status(404).json({ message: 'Coupon not found' });
-      }
-    }
-
-    const coupon = await Coupon.findById(req.params.id);
+    const coupon = await dbAdapter.findCouponById(req.params.id);
     if (coupon) {
-      coupon.isActive = !coupon.isActive;
-      const updatedCoupon = await coupon.save();
+      const updatedCoupon = await dbAdapter.updateCoupon(req.params.id, {
+        isActive: !coupon.isActive
+      });
       res.json(updatedCoupon);
     } else {
       res.status(404).json({ message: 'Coupon not found' });
@@ -98,17 +71,8 @@ router.put('/:id', protect, admin, async (req, res) => {
 // @access  Private/Admin
 router.delete('/:id', protect, admin, async (req, res) => {
   try {
-    if (global.useMockDb) {
-      const success = mockData.deleteCoupon(req.params.id);
-      if (success) {
-        return res.json({ message: 'Coupon deleted successfully' });
-      } else {
-        return res.status(404).json({ message: 'Coupon not found' });
-      }
-    }
-
-    const deletedCoupon = await Coupon.findByIdAndDelete(req.params.id);
-    if (deletedCoupon) {
+    const success = await dbAdapter.deleteCoupon(req.params.id);
+    if (success) {
       res.json({ message: 'Coupon deleted successfully' });
     } else {
       res.status(404).json({ message: 'Coupon not found' });
@@ -130,12 +94,7 @@ router.post('/validate', async (req, res) => {
 
     const uppercaseCode = code.trim().toUpperCase();
 
-    let coupon;
-    if (global.useMockDb) {
-      coupon = mockData.getCoupons().find(c => c.code === uppercaseCode);
-    } else {
-      coupon = await Coupon.findOne({ code: uppercaseCode });
-    }
+    const coupon = await dbAdapter.findCouponByCode(uppercaseCode);
 
     if (!coupon) {
       return res.status(404).json({ message: 'Invalid coupon code' });

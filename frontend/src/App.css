@@ -17,12 +17,58 @@
   padding: 6px 24px;
   font-size: 0.8rem;
   font-weight: 600;
-  text-align: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
+  min-height: 32px;
+}
+
+.top-banner p {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(
+    to right,
+    var(--accent-light) 20%,
+    #ffffff 40%,
+    #ffe082 60%,
+    var(--accent-light) 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: bannerShimmer 4s linear infinite;
+  text-shadow: 0 0 12px rgba(255, 224, 130, 0.1);
+}
+
+.banner-sparkle {
+  display: inline-block;
+  animation: sparklePulse 1.5s ease-in-out infinite alternate;
+  -webkit-text-fill-color: initial;
+}
+
+@keyframes bannerShimmer {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes sparklePulse {
+  0% {
+    transform: scale(0.9) rotate(-10deg);
+    filter: drop-shadow(0 0 2px rgba(255, 224, 130, 0.4));
+  }
+  100% {
+    transform: scale(1.25) rotate(10deg);
+    filter: drop-shadow(0 0 8px rgba(255, 224, 130, 0.95));
+  }
 }
 
 .backend-badge {
@@ -481,6 +527,11 @@
   flex-direction: column;
   gap: 20px;
   box-shadow: var(--shadow-lg);
+  background: var(--card-bg) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--border-color) !important;
+  opacity: 1 !important;
 }
 
 .mobile-search-form {
@@ -549,7 +600,6 @@
   color: var(--accent);
   margin-bottom: 16px;
   background: linear-gradient(135deg, var(--accent), #ffecb3);
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -751,6 +801,8 @@
 .hero-visuals {
   position: relative;
   height: 520px;
+  perspective: 1200px;
+  transform-style: preserve-3d;
 }
 
 .visual-image-main {
@@ -758,21 +810,40 @@
   height: 85%;
   border-radius: var(--radius-lg);
   object-fit: cover;
-  box-shadow: var(--shadow-lg);
+  object-position: top center; /* Display the face properly */
+  box-shadow: 
+    -10px 15px 30px rgba(0, 0, 0, 0.15),
+    -20px 30px 60px rgba(49, 8, 52, 0.1);
   border: 4px solid var(--accent);
+  transform: rotateY(-12deg) rotateX(6deg);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.6s ease;
+}
+
+.visual-image-main:hover {
+  transform: rotateY(-4deg) rotateX(2deg) scale(1.02);
+  box-shadow: 
+    -5px 10px 20px rgba(0, 0, 0, 0.2),
+    -10px 20px 40px rgba(74, 14, 78, 0.15);
 }
 
 .visual-badge {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
-  padding: 24px 30px;
+  bottom: 60px;
+  right: 10px;
+  padding: 20px 24px;
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-xl);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transform: translateZ(40px) rotateY(-12deg) rotateX(6deg);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 2;
+}
+
+.hero-visuals:hover .visual-badge {
+  transform: translateZ(60px) rotateY(-4deg) rotateX(2deg) scale(1.05);
 }
 
 .badge-number {
@@ -865,7 +936,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, rgba(74, 14, 78, 0.85) 15%, rgba(0,0,0,0) 65%);
+  background: linear-gradient(to top, rgba(7, 0, 7, 0.902) 15%, rgba(0,0,0,0) 65%);
   z-index: 1;
 }
 
@@ -1137,6 +1208,55 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Boutique Visit / Kanpur store placement styling */
+.boutique-visit-section {
+  padding: 80px 0 20px;
+}
+
+.boutique-visit-grid {
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.boutique-visit-title {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  color: var(--primary-dark);
+  margin: 10px 0 20px;
+}
+
+.boutique-visit-text {
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.boutique-visit-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.boutique-visit-info-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.boutique-visit-icon {
+  color: var(--secondary);
+  flex-shrink: 0;
+}
+
+.boutique-visit-map-container {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  height: 240px;
+  box-shadow: var(--shadow-sm);
 }
 
 /* Shop Page Layout */
@@ -2335,6 +2455,55 @@
   .footer-top {
     grid-template-columns: 1fr;
   }
+
+  /* Responsive Promotional Boutique & Value Props */
+  .boutique-promo {
+    padding: 50px 16px;
+  }
+  .promo-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .promo-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+  .promo-text {
+    font-size: 1rem;
+    text-align: center;
+  }
+  .value-props-list {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .value-prop-card {
+    padding: 20px;
+  }
+  
+  /* Responsive Boutique Visit Kanpur Section */
+  .boutique-visit-section {
+    padding: 40px 16px 20px;
+  }
+  .boutique-visit-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 24px 16px;
+  }
+  .boutique-visit-title {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  .boutique-visit-text {
+    text-align: center;
+  }
+  .boutique-visit-info {
+    align-items: center;
+  }
+  .boutique-visit-info-item {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -2530,5 +2699,159 @@
 .spent-badge-rupee {
   font-weight: 800;
   color: var(--primary-dark);
+}
+
+/* Responsive Enhancements & Bug Fixes */
+.brand-logo-wrapper {
+  width: 190px;
+  height: 52px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+}
+
+.admin-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.search-bar-wrapper {
+  margin: 0;
+  flex: 1;
+  max-width: 360px;
+}
+
+.export-btn-excel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-size: 0.88rem;
+  background: linear-gradient(135deg, #1D7842, #107C41);
+  border-color: #107C41;
+  box-shadow: 0 4px 12px rgba(16, 124, 65, 0.2);
+}
+
+/* Custom modern visible scrollbars for Admin Tabs */
+.admin-tabs-nav::-webkit-scrollbar {
+  height: 6px;
+}
+.admin-tabs-nav::-webkit-scrollbar-track {
+  background: var(--bg-color);
+  border-radius: var(--radius-full);
+}
+.admin-tabs-nav::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-full);
+}
+.admin-tabs-nav::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
+}
+
+/* Responsive Overrides */
+@media (max-width: 1024px) {
+  .brand-logo-wrapper {
+    width: 160px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 768px) {
+  .brand-logo-wrapper {
+    width: 140px;
+    height: 38px;
+  }
+  .user-firstname-label {
+    display: none;
+  }
+  .user-logged-btn {
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+  }
+  .icon-action-btn {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  .main-nav {
+    padding: 0 12px !important;
+    height: 64px !important;
+  }
+  .nav-actions {
+    gap: 8px !important;
+  }
+  .desktop-only-action {
+    display: none !important;
+  }
+  .mobile-menu-drawer {
+    top: 96px !important;
+    left: 12px !important;
+    right: 12px !important;
+  }
+  .payment-method-selector {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Squeezed search & export customer list database responsive stack */
+  .admin-actions-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .search-bar-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .export-btn-excel {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  
+  /* Product Card Responsive Spacing */
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+  .product-image-container {
+    height: 190px !important;
+  }
+  .product-details-summary {
+    padding: 12px !important;
+  }
+  .product-card-title {
+    font-size: 0.9rem !important;
+    height: 38px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  /* Admin Container Header overlap protection */
+  .admin-dashboard-container {
+    padding: 60px 12px 80px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-logo-wrapper {
+    width: 120px;
+    height: 34px;
+  }
+  .main-nav {
+    padding: 0 8px !important;
+  }
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+  .product-image-container {
+    height: 170px !important;
+  }
 }
 

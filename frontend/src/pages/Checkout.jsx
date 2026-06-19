@@ -241,12 +241,68 @@ export default function Checkout() {
                   gap: '14px',
                   textAlign: 'center'
                 }}>
-                  <div style={{ background: '#fff', padding: '12px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
-                    <img 
-                      src={qrCode ? qrCode : `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(`upi://pay?pa=${upiId}&pn=Monika's Creation&am=${totalPrice}&cu=INR`)}`}
-                      alt="UPI QR Code" 
-                      style={{ width: '180px', height: '180px', display: 'block', objectFit: 'contain' }}
-                    />
+                  <div style={{ background: '#fff', padding: '12px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', width: '204px', height: '204px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {qrCode ? (
+                      <img 
+                        src={qrCode}
+                        alt="UPI QR Code" 
+                        style={{ width: '180px', height: '180px', display: 'block', objectFit: 'contain' }}
+                      />
+                    ) : (
+                      <div style={{ width: '180px', height: '180px' }}>
+                        <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', display: 'block' }}>
+                          {/* Outer Finder Pattern Top-Left */}
+                          <rect x="0" y="0" width="30" height="30" fill="var(--primary)" />
+                          <rect x="5" y="5" width="20" height="20" fill="#ffffff" />
+                          <rect x="10" y="10" width="10" height="10" fill="var(--primary)" />
+                          
+                          {/* Outer Finder Pattern Top-Right */}
+                          <rect x="70" y="0" width="30" height="30" fill="var(--primary)" />
+                          <rect x="75" y="5" width="20" height="20" fill="#ffffff" />
+                          <rect x="80" y="10" width="10" height="10" fill="var(--primary)" />
+                          
+                          {/* Outer Finder Pattern Bottom-Left */}
+                          <rect x="0" y="70" width="30" height="30" fill="var(--primary)" />
+                          <rect x="5" y="75" width="20" height="20" fill="#ffffff" />
+                          <rect x="10" y="80" width="10" height="10" fill="var(--primary)" />
+                          
+                          {/* Timing / Random bits */}
+                          <rect x="35" y="5" width="5" height="5" fill="var(--primary)" />
+                          <rect x="45" y="5" width="10" height="5" fill="var(--primary)" />
+                          <rect x="60" y="5" width="5" height="5" fill="var(--primary)" />
+                          
+                          <rect x="35" y="15" width="15" height="5" fill="var(--primary)" />
+                          <rect x="55" y="15" width="5" height="10" fill="var(--primary)" />
+                          
+                          <rect x="35" y="25" width="5" height="5" fill="var(--primary)" />
+                          <rect x="45" y="25" width="20" height="5" fill="var(--primary)" />
+                          
+                          <rect x="5" y="35" width="5" height="15" fill="var(--primary)" />
+                          <rect x="15" y="35" width="20" height="5" fill="var(--primary)" />
+                          <rect x="40" y="35" width="10" height="10" fill="var(--primary)" />
+                          <rect x="55" y="35" width="5" height="5" fill="var(--primary)" />
+                          <rect x="65" y="35" width="15" height="5" fill="var(--primary)" />
+                          <rect x="85" y="35" width="10" height="5" fill="var(--primary)" />
+
+                          <rect x="5" y="55" width="15" height="5" fill="var(--primary)" />
+                          <rect x="25" y="50" width="5" height="15" fill="var(--primary)" />
+                          <rect x="35" y="55" width="20" height="5" fill="var(--primary)" />
+                          <rect x="60" y="50" width="10" height="10" fill="var(--primary)" />
+                          <rect x="75" y="55" width="5" height="5" fill="var(--primary)" />
+                          <rect x="85" y="50" width="10" height="15" fill="var(--primary)" />
+
+                          <rect x="35" y="70" width="5" height="15" fill="var(--primary)" />
+                          <rect x="45" y="70" width="15" height="5" fill="var(--primary)" />
+                          <rect x="65" y="70" width="5" height="20" fill="var(--primary)" />
+                          <rect x="75" y="70" width="15" height="5" fill="var(--primary)" />
+
+                          <rect x="45" y="85" width="10" height="10" fill="var(--primary)" />
+                          <rect x="60" y="90" width="5" height="5" fill="var(--primary)" />
+                          <rect x="75" y="85" width="20" height="5" fill="var(--primary)" />
+                          <rect x="80" y="90" width="5" height="10" fill="var(--primary)" />
+                        </svg>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <h4 style={{ fontSize: '0.95rem', fontWeight: '700', color: 'var(--text-color)', marginBottom: '4px' }}>Scan & Pay with Any UPI App</h4>

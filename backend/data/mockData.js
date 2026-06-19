@@ -32,6 +32,11 @@ const mockProducts = [
     description: 'A stunning royal Banarasi saree handwoven with pure zari and katan silk. Featuring classic floral jaal work, an elegant border, and a rich pallu, perfect for weddings and festive occasions.',
     price: 8500,
     image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Banarasi Fabric Works',
     fabric: 'Katan Silk',
     stock: 10,
@@ -49,6 +54,10 @@ const mockProducts = [
     description: 'An exquisite khaddi georgette saree in deep emerald green, handwoven with silver zari motifs. Lightweight, flowy, and traditionally styled for modern elegance.',
     price: 6200,
     image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Banarasi Fabric Works',
     fabric: 'Khaddi Georgette',
     stock: 8,
@@ -63,6 +72,10 @@ const mockProducts = [
     description: 'Traditional Phulkari embroidery on premium cotton. Intricate geometric patterns hand-embroidered by local Punjabi artisans using vibrant silk threads. Perfect accent for any plain salwar suit.',
     price: 1800,
     image: 'https://images.unsplash.com/photo-1590736969955-71cb94801759?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1590736969955-71cb94801759?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1608748010899-18f300247112?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Amritsari Fabric Works',
     fabric: 'Chanderi Cotton',
     stock: 15,
@@ -79,6 +92,10 @@ const mockProducts = [
     description: 'A full suit set featuring a Lavender Kurta with delicate hand-embroidery and a heavy Patiala Salwar, paired with a matching Phulkari chiffon dupatta. Unstitched fabric for a custom fit.',
     price: 3400,
     image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1590736969955-71cb94801759?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Amritsari Fabric Works',
     fabric: 'Pure Crepe',
     stock: 5,
@@ -93,6 +110,10 @@ const mockProducts = [
     description: 'A luxurious ruby red velvet potli bag decorated with pearls, beads, sequins, and gold embroidery. Features a secure drawstring closure and a pearl handle, ideal for brides and bridesmaids.',
     price: 1250,
     image: 'https://images.unsplash.com/photo-1566150905458-1bf1fc15a690?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1566150905458-1bf1fc15a690?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Ladies Purses',
     fabric: 'Velvet & Pearls',
     stock: 20,
@@ -109,6 +130,10 @@ const mockProducts = [
     description: 'An elegant box clutch made of raw silk featuring intricate gold Zardozi hand-embroidery. Includes a detachable metal chain strap. Large enough to carry your phone and essentials.',
     price: 1500,
     image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1566150905458-1bf1fc15a690?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Ladies Purses',
     fabric: 'Raw Silk & Zardozi',
     stock: 12,
@@ -122,7 +147,11 @@ const mockProducts = [
     name: 'Brocade Floral Potli Bag',
     description: 'A stylish potli bag crafted from authentic Banarasi brocade fabric with golden floral patterns, gold tassel tie strings, and a comfortable wrist handle.',
     price: 950,
-    image: 'https://images.unsplash.com/photo-1524498250077-3a819b566db0?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Ladies Purses',
     fabric: 'Banarasi Brocade',
     stock: 25,
@@ -137,6 +166,10 @@ const mockProducts = [
     description: 'Mustard yellow linen kurti featuring beautiful Phulkari patchworks and neckline hand embroidery. Comfort fit for casual elegance.',
     price: 2200,
     image: 'https://images.unsplash.com/photo-1608748010899-18f300247112?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1608748010899-18f300247112?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Amritsari Fabric Works',
     fabric: 'Pure Linen',
     stock: 7,

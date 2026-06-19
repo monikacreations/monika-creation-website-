@@ -10,6 +10,11 @@ const localMockProducts = [
     description: 'A stunning royal Banarasi saree handwoven with pure zari and katan silk. Featuring classic floral jaal work, an elegant border, and a rich pallu, perfect for weddings and festive occasions.',
     price: 8500,
     image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Banarasi Fabric Works',
     fabric: 'Katan Silk',
     stock: 10,
@@ -26,6 +31,10 @@ const localMockProducts = [
     description: 'An exquisite khaddi georgette saree in deep emerald green, handwoven with silver zari motifs. Lightweight, flowy, and traditionally styled for modern elegance.',
     price: 6200,
     image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Banarasi Fabric Works',
     fabric: 'Khaddi Georgette',
     stock: 8,
@@ -40,6 +49,10 @@ const localMockProducts = [
     description: 'Traditional Phulkari embroidery on premium cotton. Intricate geometric patterns hand-embroidered by local Punjabi artisans using vibrant silk threads. Perfect accent for any plain salwar suit.',
     price: 1800,
     image: 'https://images.unsplash.com/photo-1590736969955-71cb94801759?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1590736969955-71cb94801759?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1608748010899-18f300247112?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Amritsari Fabric Works',
     fabric: 'Chanderi Cotton',
     stock: 15,
@@ -56,6 +69,10 @@ const localMockProducts = [
     description: 'A full suit set featuring a Lavender Kurta with delicate hand-embroidery and a heavy Patiala Salwar, paired with a matching Phulkari chiffon dupatta. Unstitched fabric for a custom fit.',
     price: 3400,
     image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1590736969955-71cb94801759?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Amritsari Fabric Works',
     fabric: 'Pure Crepe',
     stock: 5,
@@ -70,6 +87,10 @@ const localMockProducts = [
     description: 'A luxurious ruby red velvet potli bag decorated with pearls, beads, sequins, and gold embroidery. Features a secure drawstring closure and a pearl handle, ideal for brides and bridesmaids.',
     price: 1250,
     image: 'https://images.unsplash.com/photo-1566150905458-1bf1fc15a690?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1566150905458-1bf1fc15a690?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Ladies Purses',
     fabric: 'Velvet & Pearls',
     stock: 20,
@@ -84,6 +105,10 @@ const localMockProducts = [
     description: 'An elegant box clutch made of raw silk featuring intricate gold Zardozi hand-embroidery. Includes a detachable metal chain strap. Large enough to carry your phone and essentials.',
     price: 1500,
     image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1566150905458-1bf1fc15a690?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Ladies Purses',
     fabric: 'Raw Silk & Zardozi',
     stock: 12,
@@ -97,7 +122,11 @@ const localMockProducts = [
     name: 'Brocade Floral Potli Bag',
     description: 'A stylish potli bag crafted from authentic Banarasi brocade fabric with golden floral patterns, gold tassel tie strings, and a comfortable wrist handle.',
     price: 950,
-    image: 'https://images.unsplash.com/photo-1524498250077-3a819b566db0?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Ladies Purses',
     fabric: 'Banarasi Brocade',
     stock: 25,
@@ -112,6 +141,10 @@ const localMockProducts = [
     description: 'Mustard yellow linen kurti featuring beautiful Phulkari patchworks and neckline hand embroidery. Comfort fit for casual elegance.',
     price: 2200,
     image: 'https://images.unsplash.com/photo-1608748010899-18f300247112?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1608748010899-18f300247112?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80'
+    ],
     category: 'Amritsari Fabric Works',
     fabric: 'Pure Linen',
     stock: 7,
@@ -123,7 +156,7 @@ const localMockProducts = [
 ];
 
 export const ShopContextProvider = ({ children }) => {
-  const API_URL = '/api';
+  const API_URL = import.meta.env.VITE_API_URL || '/api';
 
   // State Declarations
   const [products, setProducts] = useState(() => {
@@ -204,7 +237,10 @@ export const ShopContextProvider = ({ children }) => {
     setLoading(true);
     try {
       const response = await fetch(`${API_URL}/products`);
-      if (!response.ok) throw new Error('API request failed');
+      const contentType = response.headers.get('content-type');
+      if (!response.ok || !contentType || !contentType.includes('application/json')) {
+        throw new Error('API server unreachable');
+      }
       const data = await response.json();
       setProducts(data);
       localStorage.setItem('localProducts', JSON.stringify(data));
@@ -240,9 +276,9 @@ export const ShopContextProvider = ({ children }) => {
         body: JSON.stringify({ email, password })
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Login failed');
+      const contentType = response.headers.get('content-type');
+      if (!response.ok || !contentType || !contentType.includes('application/json')) {
+        throw new Error('API server unreachable');
       }
 
       const data = await response.json();
@@ -254,12 +290,15 @@ export const ShopContextProvider = ({ children }) => {
       
       const normalizedEmail = email.trim().toLowerCase();
       
-      // Local Auth simulation (matching backend seed data)
-      if (normalizedEmail === 'sethswayam21@gmail.com' && password === 'Monik@6306') {
+      // Local Auth simulation (supporting both seed owner and common admin test credentials)
+      const isOwner = normalizedEmail === 'sethswayam21@gmail.com' && password === 'Monik@6306';
+      const isTestAdmin = (normalizedEmail === 'admin@gmail.com' || normalizedEmail === 'admin@monikascreation.com' || normalizedEmail === 'admin') && password === 'admin123';
+      
+      if (isOwner || isTestAdmin) {
         const mockAdmin = {
           _id: 'user_owner_id_003',
-          name: "Monika's Creation Owner",
-          email: 'sethswayam21@gmail.com',
+          name: isOwner ? "Monika's Creation Owner" : "Simulated Admin",
+          email: isOwner ? 'sethswayam21@gmail.com' : normalizedEmail,
           isAdmin: true,
           token: 'mock-jwt-owner-token'
         };
@@ -295,7 +334,12 @@ export const ShopContextProvider = ({ children }) => {
         return { success: true, user: mockUser };
       }
       
-      throw new Error(err.message || 'Invalid email or password');
+      // Prevent showing raw JSON parse errors to the user by sanitizing the error message
+      let cleanMsg = err.message;
+      if (cleanMsg.includes('Unexpected token') || cleanMsg.includes('not valid JSON') || cleanMsg.includes('JSON') || cleanMsg.includes('unreachable') || cleanMsg.includes('Failed to fetch')) {
+        cleanMsg = 'Invalid email or password';
+      }
+      throw new Error(cleanMsg || 'Invalid email or password');
     }
   };
 
@@ -307,9 +351,9 @@ export const ShopContextProvider = ({ children }) => {
         body: JSON.stringify({ name, email, password, phone })
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Registration failed');
+      const contentType = response.headers.get('content-type');
+      if (!response.ok || !contentType || !contentType.includes('application/json')) {
+        throw new Error('API server unreachable');
       }
 
       const data = await response.json();
@@ -405,105 +449,156 @@ export const ShopContextProvider = ({ children }) => {
 
   // Product Admin Operations (CRUD simulated / API)
   const addProduct = async (productData) => {
-    try {
-      if (!backendStatus.online) throw new Error('Offline mode active');
+    if (backendStatus.online) {
+      try {
+        const response = await fetch(`${API_URL}/products`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userInfo?.token}`
+          },
+          body: JSON.stringify(productData)
+        });
+        const contentType = response.headers.get('content-type');
+        if (!response.ok) {
+          let errorMsg = 'Failed to create product';
+          if (contentType && contentType.includes('application/json')) {
+            const errData = await response.json();
+            errorMsg = errData.message || errorMsg;
+          }
+          throw new Error(errorMsg);
+        }
 
-      const response = await fetch(`${API_URL}/products`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${userInfo?.token}`
-        },
-        body: JSON.stringify(productData)
-      });
-
-      if (!response.ok) throw new Error('Failed to add product');
-      const data = await response.json();
-      await fetchProducts(); // Refresh list
-      return data;
-    } catch (err) {
-      console.warn('Could not save product to database, adding to local memory.', err.message);
-      const newLocalProduct = {
-        _id: 'prod_local_' + Math.random().toString(36).substr(2, 9),
-        ...productData,
-        price: Number(productData.price),
-        stock: Number(productData.stock),
-        rating: 4.5,
-        numReviews: 0,
-        reviews: [],
-        createdAt: new Date().toISOString()
-      };
-      setProducts(prev => {
-        const updated = [newLocalProduct, ...prev];
-        localStorage.setItem('localProducts', JSON.stringify(updated));
-        return updated;
-      });
-      return newLocalProduct;
+        if (contentType && contentType.includes('application/json')) {
+          const serverProduct = await response.json();
+          setProducts(prev => {
+            const updated = [serverProduct, ...prev];
+            localStorage.setItem('localProducts', JSON.stringify(updated));
+            return updated;
+          });
+          return serverProduct;
+        }
+      } catch (err) {
+        console.error('API create product failed:', err.message);
+        throw err;
+      }
     }
+
+    // Offline fallback
+    const newId = 'prod_local_' + Math.random().toString(36).substr(2, 9);
+    const newLocalProduct = {
+      _id: newId,
+      ...productData,
+      price: Number(productData.price),
+      stock: Number(productData.stock),
+      images: productData.images || [],
+      rating: 4.5,
+      numReviews: 0,
+      reviews: [],
+      createdAt: new Date().toISOString()
+    };
+    setProducts(prev => {
+      const updated = [newLocalProduct, ...prev];
+      localStorage.setItem('localProducts', JSON.stringify(updated));
+      return updated;
+    });
+    return newLocalProduct;
   };
 
   const editProduct = async (id, productData) => {
-    try {
-      if (!backendStatus.online) throw new Error('Offline mode active');
-
-      const response = await fetch(`${API_URL}/products/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${userInfo?.token}`
-        },
-        body: JSON.stringify(productData)
-      });
-
-      if (!response.ok) throw new Error('Failed to update product');
-      const data = await response.json();
-      await fetchProducts(); // Refresh list
-      return data;
-    } catch (err) {
-      console.warn('Could not edit product on database, editing in local memory.', err.message);
-      let updated;
-      setProducts(prev => {
-        updated = prev.map(p => {
-          if (p._id === id) {
-            return {
-              ...p,
-              ...productData,
-              price: Number(productData.price),
-              stock: Number(productData.stock)
-            };
-          }
-          return p;
+    if (backendStatus.online) {
+      try {
+        const response = await fetch(`${API_URL}/products/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userInfo?.token}`
+          },
+          body: JSON.stringify(productData)
         });
-        localStorage.setItem('localProducts', JSON.stringify(updated));
-        return updated;
-      });
-      return { _id: id, ...productData };
+        const contentType = response.headers.get('content-type');
+        if (!response.ok) {
+          let errorMsg = 'Failed to update product';
+          if (contentType && contentType.includes('application/json')) {
+            const errData = await response.json();
+            errorMsg = errData.message || errorMsg;
+          }
+          throw new Error(errorMsg);
+        }
+
+        if (contentType && contentType.includes('application/json')) {
+          const serverProduct = await response.json();
+          setProducts(prev => {
+            const updated = prev.map(p => p._id === id ? serverProduct : p);
+            localStorage.setItem('localProducts', JSON.stringify(updated));
+            return updated;
+          });
+          return serverProduct;
+        }
+      } catch (err) {
+        console.error('API edit product failed:', err.message);
+        throw err;
+      }
     }
+
+    // Offline fallback
+    setProducts(prev => {
+      const updated = prev.map(p => {
+        if (p._id === id) {
+          return {
+            ...p,
+            ...productData,
+            price: Number(productData.price),
+            stock: Number(productData.stock),
+            images: productData.images || p.images || []
+          };
+        }
+        return p;
+      });
+      localStorage.setItem('localProducts', JSON.stringify(updated));
+      return updated;
+    });
+    return { _id: id, ...productData };
   };
 
   const deleteProduct = async (id) => {
-    try {
-      if (!backendStatus.online) throw new Error('Offline mode active');
-
-      const response = await fetch(`${API_URL}/products/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${userInfo?.token}`
+    if (backendStatus.online) {
+      try {
+        const response = await fetch(`${API_URL}/products/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${userInfo?.token}`
+          }
+        });
+        const contentType = response.headers.get('content-type');
+        if (!response.ok) {
+          let errorMsg = 'Failed to delete product';
+          if (contentType && contentType.includes('application/json')) {
+            const errData = await response.json();
+            errorMsg = errData.message || errorMsg;
+          }
+          throw new Error(errorMsg);
         }
-      });
 
-      if (!response.ok) throw new Error('Failed to delete product');
-      await fetchProducts(); // Refresh list
-      return true;
-    } catch (err) {
-      console.warn('Could not delete product from database, deleting from local memory.', err.message);
-      setProducts(prev => {
-        const updated = prev.filter(p => p._id !== id);
-        localStorage.setItem('localProducts', JSON.stringify(updated));
-        return updated;
-      });
-      return true;
+        setProducts(prev => {
+          const updated = prev.filter(p => p._id !== id);
+          localStorage.setItem('localProducts', JSON.stringify(updated));
+          return updated;
+        });
+        return true;
+      } catch (err) {
+        console.error('API delete product failed:', err.message);
+        throw err;
+      }
     }
+
+    // Offline fallback
+    setProducts(prev => {
+      const updated = prev.filter(p => p._id !== id);
+      localStorage.setItem('localProducts', JSON.stringify(updated));
+      return updated;
+    });
+    return true;
   };
 
   // Order Operations

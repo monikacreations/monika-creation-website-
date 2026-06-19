@@ -134,13 +134,17 @@ export default function Navbar() {
     <header className="navbar-container">
       {/* Top Notification Bar */}
       <div className="top-banner">
-        <p>✨ Elegant Banarasi & Amritsari Fabric Works • Free Shipping on orders above ₹2000! ✨</p>
+        <p>
+          <span className="banner-sparkle">✨</span>
+          <span>Elegant Banarasi & Amritsari Fabric Works • Free Shipping on orders above ₹2000!</span>
+          <span className="banner-sparkle">✨</span>
+        </p>
       </div>
 
       <nav className="main-nav container">
         {/* Left Side: Horizontal Logo (Text Left, Rotated Emblem Right) */}
         <Link to="/" className="brand-logo" onClick={() => setMobileMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', padding: 0 }}>
-          <div className="logo-svg-wrapper" style={{ width: '190px', height: '52px', border: 'none', background: 'transparent', padding: 0, boxShadow: 'none' }}>
+          <div className="brand-logo-wrapper">
             <svg viewBox="0 0 250 70" className="peacock-logo-horizontal" style={{ width: '100%', height: '100%', display: 'block' }}>
               <defs>
                 <style>{`
@@ -158,8 +162,8 @@ export default function Navbar() {
               <text x="75" y="50" textAnchor="middle" fontFamily="'Montserrat', sans-serif" fontSize="9.5" fontWeight="800" letterSpacing="4.5" fill="#18051a">CREATION</text>
               <line x1="10" y1="52" x2="140" y2="52" stroke="#18051a" strokeWidth="1.2" />
 
-              {/* Right Side: Rotated Emblem (90 deg Clockwise) */}
-              <g transform="translate(170, 2) scale(0.66) rotate(90 50 50)">
+              {/* Right Side: Upright Emblem */}
+              <g transform="translate(170, 2) scale(0.66)">
                 {/* Lotus Petals */}
                 {/* Center-back (Maroon) */}
                 <path d="M 50,15 C 44,28 43,45 43,58 L 57,58 C 57,45 56,28 50,15 Z" fill="#800c14" />
@@ -206,7 +210,7 @@ export default function Navbar() {
         {/* Right Side: Actions */}
         <div className="nav-actions">
           {/* Theme Toggle */}
-          <button onClick={toggleTheme} className="icon-action-btn" aria-label="Toggle Theme">
+          <button onClick={toggleTheme} className="icon-action-btn desktop-only-action" aria-label="Toggle Theme">
             {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
           </button>
 
@@ -218,7 +222,7 @@ export default function Navbar() {
 
           {/* Notifications Bell & Dropdown */}
           {userInfo && (
-            <div className="notification-menu-wrapper">
+            <div className="notification-menu-wrapper desktop-only-action">
               <button 
                 onClick={() => { setShowNotifications(!showNotifications); setShowProfileMenu(false); }} 
                 className="icon-action-btn" 
@@ -348,6 +352,57 @@ export default function Navbar() {
             <Link to="/shop?category=Amritsari Fabric Works" onClick={() => setMobileMenuOpen(false)}>Amritsari Works</Link>
             <Link to="/shop?category=Ladies Purses" onClick={() => setMobileMenuOpen(false)}>Ladies Purses</Link>
             <hr />
+            
+            {/* Theme Toggle row in Mobile Drawer */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0' }}>
+              <span style={{ fontSize: '0.95rem', fontWeight: '600', color: 'var(--text-color)' }}>Theme Mode</span>
+              <button 
+                onClick={toggleTheme} 
+                className="icon-action-btn" 
+                style={{ background: 'rgba(74, 14, 78, 0.05)', color: 'var(--primary)', border: 'none', cursor: 'pointer' }}
+                aria-label="Toggle Theme"
+              >
+                {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+              </button>
+            </div>
+            
+            {/* Notifications row/list in Mobile Drawer */}
+            {userInfo && notifications.length > 0 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px', borderTop: '1px solid var(--border-color)', paddingTop: '15px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.95rem', fontWeight: '600', color: 'var(--text-color)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Bell size={16} /> Notifications ({notifications.length})
+                  </span>
+                  <button 
+                    onClick={clearAllNotifications} 
+                    style={{ background: 'none', border: 'none', color: 'var(--secondary)', fontSize: '0.78rem', fontWeight: '700', cursor: 'pointer' }}
+                  >
+                    Clear All
+                  </button>
+                </div>
+                <div style={{ maxHeight: '200px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px', padding: '4px' }}>
+                  {notifications.map((n) => (
+                    <div key={n.id} className={`notification-item ${n.type}`} style={{ padding: '8px 10px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', position: 'relative' }}>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                        <div className="notification-item-content">
+                          <span style={{ fontWeight: '700', fontSize: '0.8rem', display: 'block' }}>{n.title}</span>
+                          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{n.message}</span>
+                        </div>
+                      </div>
+                      <button 
+                        onClick={(e) => dismissNotification(n.id, e)} 
+                        style={{ position: 'absolute', right: '6px', top: '6px', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                      >
+                        <X size={10} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <hr />
+
             {userInfo ? (
               <>
                 {userInfo.isAdmin && (

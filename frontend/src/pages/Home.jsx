@@ -13,7 +13,7 @@ export default function Home() {
     {
       name: 'Banarasi Fabric Works',
       desc: 'Handwoven pure silk sarees and suits with gold zari brocades.',
-      image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80',
+      image: '',
       link: '/shop?category=Banarasi Fabric Works'
     },
     {
@@ -55,7 +55,7 @@ export default function Home() {
           </div>
           <div className="hero-visuals">
             <img 
-              src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=80" 
+              src="/hero_new.jpg" 
               alt="Indian Silk Fabrics" 
               className="visual-image-main floating" 
             />
@@ -183,25 +183,25 @@ export default function Home() {
       </section>
 
       {/* Boutique Details Map/Contact Card */}
-      <section className="container" style={{ padding: '80px 0 20px' }}>
-        <div className="glass-panel" style={{ padding: '40px', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '40px', alignItems: 'center' }}>
+      <section className="boutique-visit-section container">
+        <div className="glass-panel boutique-visit-grid">
           <div>
             <span className="section-tag" style={{ color: 'var(--secondary)' }}>Namaste & Welcome</span>
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', color: 'var(--primary-dark)', margin: '10px 0 20px' }}>
+            <h2 className="boutique-visit-title">
               Visit Our Kanpur Boutique
             </h2>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
+            <p className="boutique-visit-text">
               Feel the richness of raw silk and verify the heavy borders of Banarasi sarees in person. 
               We look forward to hosting you at our family boutique on Shivala Road.
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <MapPin size={20} style={{ color: 'var(--secondary)' }} />
+            <div className="boutique-visit-info">
+              <div className="boutique-visit-info-item">
+                <MapPin size={20} className="boutique-visit-icon" />
                 <span><strong>Boutique Address:</strong> 37/47, Shivala Road, Kanpur, UP - 208001</span>
               </div>
             </div>
           </div>
-          <div style={{ borderRadius: 'var(--radius-sm)', overflow: 'hidden', height: '240px', boxShadow: 'var(--shadow-sm)' }}>
+          <div className="boutique-visit-map-container">
             {/* Display static maps card representing store placement */}
             <iframe 
               title="Google Map Place"

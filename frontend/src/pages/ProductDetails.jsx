@@ -7,6 +7,7 @@ export default function ProductDetails() {
   const { id } = useParams();
   const { products, addToCart, userInfo, addProductReview } = useContext(ShopContext);
   const [product, setProduct] = useState(null);
+  const [activeImage, setActiveImage] = useState('');
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
@@ -18,6 +19,7 @@ export default function ProductDetails() {
     if (foundProduct) {
       setProduct(foundProduct);
       setQty(1); // Reset qty on product change
+      setActiveImage(foundProduct.image);
     }
   }, [id, products]);
 
@@ -66,9 +68,66 @@ export default function ProductDetails() {
       </Link>
 
       <div className="details-grid">
-        {/* Left Side: Product Image */}
-        <div className="details-image-panel">
-          <img src={product.image} alt={product.name} className="details-img" />
+        {/* Left Side: Product Image Gallery */}
+        <div className="details-image-panel" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          <div className="main-image-container" style={{
+            position: 'relative',
+            width: '100%',
+            aspectRatio: '1',
+            borderRadius: 'var(--radius-md)',
+            overflow: 'hidden',
+            border: '1px solid var(--border-color)',
+            background: 'var(--bg-color)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <img 
+              src={activeImage || product.image} 
+              alt={product.name} 
+              className="details-img" 
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                transition: 'opacity 0.3s ease'
+              }}
+            />
+          </div>
+
+          {/* Thumbnails Row */}
+          {product.images && product.images.length > 1 && (
+            <div className="thumbnails-row" style={{
+              display: 'flex',
+              gap: '10px',
+              overflowX: 'auto',
+              paddingBottom: '8px',
+              scrollbarWidth: 'thin'
+            }}>
+              {product.images.map((imgUrl, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImage(imgUrl)}
+                  type="button"
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: 'var(--radius-sm)',
+                    overflow: 'hidden',
+                    border: activeImage === imgUrl ? '2px solid var(--primary-dark)' : '1px solid var(--border-color)',
+                    padding: 0,
+                    cursor: 'pointer',
+                    background: 'none',
+                    flexShrink: 0,
+                    boxShadow: activeImage === imgUrl ? '0 0 8px rgba(74, 14, 78, 0.2)' : 'none',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Right Side: Product Details */}

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const dbAdapter = require('../data/dbAdapter');
 
 const protect = async (req, res, next) => {
   let token;
@@ -39,9 +39,14 @@ const protect = async (req, res, next) => {
         return next();
       }
 
-      req.user = await User.findById(decoded.id).select('-password');
+      req.user = await dbAdapter.findUserById(decoded.id);
       if (!req.user) {
         return res.status(401).json({ message: 'Not authorized, user not found' });
+      }
+
+      // Exclude password from req.user
+      if (req.user) {
+        delete req.user.password;
       }
 
       next();

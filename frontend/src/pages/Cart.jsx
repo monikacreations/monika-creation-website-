@@ -21,18 +21,18 @@ export default function Cart() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="container" style={{ padding: '80px 24px' }}>
-        <div className="empty-cart-state">
-          <div style={{ display: 'inline-flex', padding: '20px', background: 'rgba(74, 14, 78, 0.05)', borderRadius: '50%', color: 'var(--primary)', marginBottom: '20px' }}>
+      <div className="container" style={{ padding: '80px 24px', display: 'flex', justifyContent: 'center' }}>
+        <div className="empty-cart-state" style={{ padding: '60px 40px', maxWidth: '500px', width: '100%', background: 'var(--card-bg)', border: '1px dashed var(--border-color)', borderRadius: 'var(--radius-md)', textAlign: 'center', marginTop: '30px' }}>
+          <div style={{ display: 'inline-flex', padding: '20px', background: 'rgba(74, 14, 78, 0.08)', borderRadius: '50%', color: 'var(--primary)', marginBottom: '20px' }}>
             <ShoppingBag size={48} />
           </div>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: 'var(--primary-dark)', marginBottom: '10px' }}>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: 'var(--text-color)', marginBottom: '10px' }}>
             Your Shopping Bag is Empty
           </h2>
-          <p style={{ color: 'var(--text-muted)', marginBottom: '30px', maxWidth: '400px', margin: '0 auto 30px' }}>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '30px', fontSize: '1rem', lineHeight: '1.5' }}>
             Looks like you haven't added any Banarasi sarees, Amritsari Patiala sets, or ladies purses yet.
           </p>
-          <Link to="/shop" className="btn btn-primary">Explore Collections</Link>
+          <Link to="/shop" className="btn btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>Explore Collections</Link>
         </div>
       </div>
     );

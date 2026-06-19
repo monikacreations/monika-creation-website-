@@ -53,6 +53,7 @@
   --border-color: #38243c;
   --glass-bg: rgba(30, 17, 34, 0.75);
   --glass-border: rgba(255, 255, 255, 0.08);
+  --primary-dark: #f5edf7;
 }
 
 /* Reset & Base Styles */
@@ -62,6 +63,11 @@
   box-sizing: border-box;
 }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-color);
@@ -69,7 +75,6 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
   transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 

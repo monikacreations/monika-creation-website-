@@ -30,67 +30,72 @@ app.use(cors({
   },
   credentials: true
 }));
-app.use(express.json({ limit: '10mb' })); // Increased limit for base64 image uploads
+app.use(express.json({ limit: '50mb' })); // Increased limit for base64 image uploads
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // State flag for mock database fallback
 global.useMockDb = false;
 
-// Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/monikas_creation';
+// Connect to Database (MongoDB or fallback to Mock Database)
+const dbAdapter = require('./data/dbAdapter');
 
-console.log('Connecting to database...');
-mongoose.connect(mongoUri, {
-  serverSelectionTimeoutMS: 3000, // Timeout after 3 seconds
-})
-.then(async () => {
-  console.log('Successfully connected to MongoDB!');
-  global.useMockDb = false;
-  // Seed initial data if database is empty
-  await seedData();
-
-  // Ensure owner account always exists with admin rights in MongoDB
+const initializeDatabase = async () => {
+  // Connect to MongoDB
+  const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/monikas_creation';
+  console.log('Connecting to MongoDB database...');
+  
   try {
-    const User = require('./models/User');
-    const bcrypt = require('bcryptjs');
-    const ownerEmail = 'sethswayam21@gmail.com';
+    await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 3000, // Timeout after 3 seconds
+    });
+    console.log('Successfully connected to MongoDB!');
+    global.useMockDb = false;
     
-    // Purge unwanted default test admin account if present in MongoDB
-    await User.deleteMany({ email: 'admin@monikascreation.com' });
-    
-    const ownerExists = await User.findOne({ email: ownerEmail });
-    if (!ownerExists) {
-      console.log('Owner account not found. Seeding owner account...');
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash('Monik@6306', salt);
-      await User.create({
-        name: "Monika's Creation Owner",
-        email: ownerEmail,
-        password: hashedPassword,
-        phone: '0000000000',
-        isAdmin: true
-      });
-      console.log('Owner account seeded successfully.');
-    } else {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash('Monik@6306', salt);
-      ownerExists.isAdmin = true;
-      ownerExists.password = hashedPassword;
-      await ownerExists.save();
-      console.log('Owner account verified as Admin with updated password.');
+    // Seed initial data if database is empty
+    await seedData();
+
+    // Ensure owner account always exists with admin rights in MongoDB
+    try {
+      const bcrypt = require('bcryptjs');
+      const ownerEmail = 'sethswayam21@gmail.com';
+      
+      const ownerExists = await dbAdapter.findUserByEmail(ownerEmail);
+      if (!ownerExists) {
+        console.log('Owner account not found in MongoDB. Seeding owner account...');
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash('Monik@6306', salt);
+        await dbAdapter.createUser({
+          name: "Monika's Creation Owner",
+          email: ownerEmail,
+          password: hashedPassword,
+          phone: '0000000000',
+          isAdmin: true
+        });
+        console.log('Owner account seeded in MongoDB successfully.');
+      } else {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash('Monik@6306', salt);
+        await dbAdapter.updateUser(ownerExists._id, {
+          isAdmin: true,
+          password: hashedPassword
+        });
+        console.log('Owner account verified in MongoDB.');
+      }
+    } catch (err) {
+      console.error('Error ensuring owner admin account in MongoDB:', err.message);
     }
   } catch (err) {
-    console.error('Error ensuring owner admin account:', err.message);
+    console.warn('===============================================================');
+    console.warn('WARNING: Could not connect to MongoDB database.');
+    console.warn('Reason:', err.message);
+    console.warn('FALLING BACK: Running with an in-memory Mock Database.');
+    console.warn('All features (Auth, Cart, Checkout, Admin) remain operational.');
+    console.warn('===============================================================');
+    global.useMockDb = true;
   }
-})
-.catch((err) => {
-  console.warn('===============================================================');
-  console.warn('WARNING: Could not connect to MongoDB database.');
-  console.warn('Reason:', err.message);
-  console.warn('FALLING BACK: Running with an in-memory Mock Database.');
-  console.warn('All features (Auth, Cart, Checkout, Admin) remain operational.');
-  console.warn('===============================================================');
-  global.useMockDb = true;
-});
+};
+
+initializeDatabase();
 
 // Routes
 app.use('/api/users', authRoutes);
@@ -137,10 +142,14 @@ server.on('error', (err) => {
 const shutdown = () => {
   console.log('\nShutting down server gracefully...');
   server.close(() => {
-    mongoose.connection.close(false, () => {
-      console.log('MongoDB connection closed.');
+    if (mongoose.connection.readyState !== 0) {
+      mongoose.connection.close(false, () => {
+        console.log('MongoDB connection closed.');
+        process.exit(0);
+      });
+    } else {
       process.exit(0);
-    });
+    }
   });
   // Force exit after 5 seconds if still hanging
   setTimeout(() => process.exit(0), 5000);
@@ -148,3 +157,5 @@ const shutdown = () => {
 
 process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
+
+module.exports = app;
