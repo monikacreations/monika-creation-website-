@@ -1,4 +1,12 @@
 {
+  "name": "monikas-creation",
+  "version": "1.0.0",
+  "scripts": {
+    "install-all": "npm install && npm install --prefix frontend && npm install --prefix backend",
+    "build-frontend": "npm run build --prefix frontend",
+    "start": "node backend/server.js",
+    "dev": "npm run dev --prefix backend"
+  },
   "dependencies": {
     "mongodb": "^7.3.0"
   }

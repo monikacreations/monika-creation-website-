@@ -108,13 +108,38 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/coupons', couponRoutes);
 
+// Serve static assets
+const frontendDistPath = path.join(__dirname, '../frontend/dist');
+app.use(express.static(frontendDistPath));
+
 // Health check / API status route
-app.get('/', (req, res) => {
+app.get('/api/status', (req, res) => {
   res.json({
     status: 'Online',
     brand: "Monika's Creation API",
     database: global.useMockDb ? 'Mock In-Memory' : 'MongoDB Atlas/Local',
     timestamp: new Date()
+  });
+});
+
+// Serve frontend index.html for any other non-API route
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  const indexPath = path.join(frontendDistPath, 'index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      if (req.path === '/') {
+        return res.json({
+          status: 'Online',
+          brand: "Monika's Creation API (Frontend not built yet)",
+          database: global.useMockDb ? 'Mock In-Memory' : 'MongoDB Atlas/Local',
+          timestamp: new Date()
+        });
+      }
+      res.status(404).send('Frontend static assets are not built yet. Run "npm run build-frontend" to build the React application.');
+    }
   });
 });
 
