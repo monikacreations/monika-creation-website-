@@ -1,4 +1,10 @@
 {
+  "name": "monika-creation-website",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "npm install --prefix frontend && npm install --prefix backend",
+    "build": "npm run build --prefix frontend && mv frontend/dist public"
+  },
   "dependencies": {
     "mongodb": "^7.3.0"
   }

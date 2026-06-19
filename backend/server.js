@@ -125,40 +125,43 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} in ${global.useMockDb ? 'MOCK' : 'MONGO'} database mode.`);
-});
-
-// Handle server errors (e.g. EADDRINUSE when port is already occupied)
-server.on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    console.error(`\n❌ Port ${PORT} is already in use.`);
-    console.error(`   Stop the existing process and restart: kill the process using port ${PORT}\n`);
-  } else {
-    console.error('Server error:', err.message);
-  }
-  process.exit(1);
-});
-
-// Graceful shutdown on SIGTERM/SIGINT (used by nodemon on restart)
-const shutdown = () => {
-  console.log('\nShutting down server gracefully...');
-  server.close(() => {
-    if (mongoose.connection.readyState !== 0) {
-      mongoose.connection.close(false, () => {
-        console.log('MongoDB connection closed.');
-        process.exit(0);
-      });
-    } else {
-      process.exit(0);
-    }
+let server;
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  server = app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT} in ${global.useMockDb ? 'MOCK' : 'MONGO'} database mode.`);
   });
-  // Force exit after 5 seconds if still hanging
-  setTimeout(() => process.exit(0), 5000);
-};
 
-process.on('SIGTERM', shutdown);
-process.on('SIGINT', shutdown);
+  // Handle server errors (e.g. EADDRINUSE when port is already occupied)
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`\n❌ Port ${PORT} is already in use.`);
+      console.error(`   Stop the existing process and restart: kill the process using port ${PORT}\n`);
+    } else {
+      console.error('Server error:', err.message);
+    }
+    process.exit(1);
+  });
+
+  // Graceful shutdown on SIGTERM/SIGINT (used by nodemon on restart)
+  const shutdown = () => {
+    console.log('\nShutting down server gracefully...');
+    server.close(() => {
+      if (mongoose.connection.readyState !== 0) {
+        mongoose.connection.close(false, () => {
+          console.log('MongoDB connection closed.');
+          process.exit(0);
+        });
+      } else {
+        process.exit(0);
+      }
+    });
+    // Force exit after 5 seconds if still hanging
+    setTimeout(() => process.exit(0), 5000);
+  };
+
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
+}
 
 module.exports = app;
