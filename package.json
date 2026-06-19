@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "postinstall": "npm install --prefix frontend && npm install --prefix backend",
-    "build": "npm run build --prefix frontend && rm -rf public && mv frontend/dist public"
+    "build": "node scripts/build.js"
   },
   "dependencies": {
     "@vercel/speed-insights": "^2.0.0",
