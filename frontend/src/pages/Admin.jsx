@@ -6,6 +6,46 @@ import {
   AlertCircle, CheckCircle, BarChart3, Users, Search, FileSpreadsheet 
 } from 'lucide-react';
 
+const compressImage = (base64Str, maxWidth = 1000, maxHeight = 1000, quality = 0.7) => {
+  return new Promise((resolve) => {
+    if (!base64Str || !base64Str.startsWith('data:image')) {
+      resolve(base64Str);
+      return;
+    }
+    const img = new Image();
+    img.src = base64Str;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+      resolve(compressedBase64);
+    };
+    img.onerror = () => {
+      resolve(base64Str);
+    };
+  });
+};
+
 export default function Admin() {
   const { 
     products, userInfo, backendStatus, addProduct, editProduct, deleteProduct, getAllOrders, deliverOrder, payOrder,
@@ -168,8 +208,9 @@ export default function Admin() {
         return;
       }
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
+      reader.onloadend = async () => {
+        const compressed = await compressImage(reader.result, 1000, 1000, 0.7);
+        setImage(compressed);
       };
       reader.onerror = () => {
         alert('Failed to read image file');
@@ -750,8 +791,9 @@ export default function Admin() {
                           return;
                         }
                         const reader = new FileReader();
-                        reader.onloadend = () => {
-                          setAdditionalImages(prev => [...prev, reader.result]);
+                        reader.onloadend = async () => {
+                          const compressed = await compressImage(reader.result, 1000, 1000, 0.7);
+                          setAdditionalImages(prev => [...prev, compressed]);
                         };
                         reader.readAsDataURL(file);
                       });
@@ -1332,8 +1374,9 @@ export default function Admin() {
                       const file = e.target.files[0];
                       if (file) {
                         const reader = new FileReader();
-                        reader.onloadend = () => {
-                          setSettingsQr(reader.result);
+                        reader.onloadend = async () => {
+                          const compressed = await compressImage(reader.result, 400, 400, 0.7);
+                          setSettingsQr(compressed);
                         };
                         reader.readAsDataURL(file);
                       }
