@@ -8,9 +8,31 @@ const seedData = async () => {
   try {
     // Seed default coupons
     await seedCoupons();
-    console.log('Database Seeding Completed (Skipped mock products) Successfully!');
+    // Seed default products
+    await seedProducts();
+    console.log('Database Seeding Completed Successfully!');
   } catch (error) {
     console.error('Error seeding database:', error.message);
+  }
+};
+
+const seedProducts = async () => {
+  try {
+    const products = await dbAdapter.getAllProducts();
+    if (products.length === 0) {
+      console.log('Seeding default products to database...');
+      for (const p of mockData.mockProducts) {
+        // Keep standard mock product structure but ensure reviews have proper date objects
+        const productToCreate = {
+          ...p,
+          reviews: p.reviews ? p.reviews.map(r => ({ ...r, createdAt: new Date() })) : []
+        };
+        await dbAdapter.createProduct(productToCreate);
+      }
+      console.log('Successfully seeded default products!');
+    }
+  } catch (err) {
+    console.error('Product seeding error:', err.message);
   }
 };
 

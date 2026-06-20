@@ -17,19 +17,19 @@ export default function Home() {
     {
       name: 'Banarasi Fabric Works',
       desc: 'Handwoven pure silk sarees and suits with gold zari brocades.',
-      image: '',
+      image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80',
       link: '/shop?category=Banarasi Fabric Works'
     },
     {
       name: 'Amritsari Fabric Works',
       desc: 'Vibrant hand-embroidered Phulkari dupattas and Patiala suits.',
-      image: 'https://images.unsplash.com/photo-1590736969955-71cb94801759?auto=format&fit=crop&w=600&q=80',
+      image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80',
       link: '/shop?category=Amritsari Fabric Works'
     },
     {
       name: 'Ladies Purses',
       desc: 'Luxurious velvet bridal potli bags and raw silk zardozi box clutches.',
-      image: 'https://images.unsplash.com/photo-1566150905458-1bf1fc15a690?auto=format&fit=crop&w=600&q=80',
+      image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80',
       link: '/shop?category=Ladies Purses'
     }
   ];
