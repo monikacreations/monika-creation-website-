@@ -8,31 +8,18 @@ const seedData = async () => {
   try {
     // Seed default coupons
     await seedCoupons();
-    // Seed default products
-    await seedProducts();
+    
+    // Clean up mock products from database if present
+    if (global.useMockDb === false) {
+      const deleteResult = await Product.deleteMany({ _id: { $regex: /^prod_/ } });
+      if (deleteResult.deletedCount > 0) {
+        console.log(`Cleaned up ${deleteResult.deletedCount} mock products from database.`);
+      }
+    }
+    
     console.log('Database Seeding Completed Successfully!');
   } catch (error) {
     console.error('Error seeding database:', error.message);
-  }
-};
-
-const seedProducts = async () => {
-  try {
-    const products = await dbAdapter.getAllProducts();
-    if (products.length === 0) {
-      console.log('Seeding default products to database...');
-      for (const p of mockData.mockProducts) {
-        // Keep standard mock product structure but ensure reviews have proper date objects
-        const productToCreate = {
-          ...p,
-          reviews: p.reviews ? p.reviews.map(r => ({ ...r, createdAt: new Date() })) : []
-        };
-        await dbAdapter.createProduct(productToCreate);
-      }
-      console.log('Successfully seeded default products!');
-    }
-  } catch (err) {
-    console.error('Product seeding error:', err.message);
   }
 };
 
