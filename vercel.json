@@ -8,6 +8,10 @@
     {
       "source": "/uploads/(.*)",
       "destination": "/api/server"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
