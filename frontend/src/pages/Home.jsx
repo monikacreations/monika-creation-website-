@@ -29,7 +29,7 @@ export default function Home() {
     {
       name: 'Ladies Purses',
       desc: 'Luxurious velvet bridal potli bags and raw silk zardozi box clutches.',
-      image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80',
+      image: '',
       link: '/shop?category=Ladies Purses'
     }
   ];
