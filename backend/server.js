@@ -187,7 +187,9 @@ const startServer = (retries = 5) => {
   });
 };
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
 
 // Graceful shutdown on SIGTERM/SIGINT (used by nodemon on restart)
 const shutdown = () => {
