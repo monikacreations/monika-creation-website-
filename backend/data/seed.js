@@ -15,6 +15,19 @@ const seedData = async () => {
       if (deleteResult.deletedCount > 0) {
         console.log(`Cleaned up ${deleteResult.deletedCount} mock products from database.`);
       }
+
+      // Seed default products if database is empty
+      const productCount = await Product.countDocuments();
+      if (productCount === 0) {
+        console.log('MongoDB Product collection is empty. Seeding default products...');
+        const productsToSeed = mockData.mockProducts.map(p => {
+          // Clone the product and omit the _id field so MongoDB auto-generates a standard ObjectId
+          const { _id, ...rest } = p;
+          return rest;
+        });
+        await Product.insertMany(productsToSeed);
+        console.log(`Successfully seeded ${productsToSeed.length} default products into MongoDB!`);
+      }
     }
     
     console.log('Database Seeding Completed Successfully!');
